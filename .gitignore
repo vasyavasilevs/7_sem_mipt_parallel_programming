@@ -3,6 +3,11 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+#
+*.a.out
+*.o
+*.[oa]
+
 # User-specific files
 *.rsuser
 *.suo
@@ -407,5 +412,3 @@ packages
 # Ignore any files in /bin and /obj Folders
 **/bin/*
 **/obj/*
-
-*.[oa]
