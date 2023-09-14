@@ -396,3 +396,16 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+#from stackoverflow
+*.user
+_ReSharper.*
+bin
+obj
+packages
+
+# Ignore any files in /bin and /obj Folders
+**/bin/*
+**/obj/*
+
+*.[oa]
