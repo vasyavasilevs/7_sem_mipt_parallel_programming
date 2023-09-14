@@ -408,4 +408,11 @@ packages
 **/bin/*
 **/obj/*
 
+# Ignore files with no file extensions (thx gpt)
+**/*
+!*/
+!*.*
+**/.[oa]
+**/a.out
+a.out
 *.[oa]
