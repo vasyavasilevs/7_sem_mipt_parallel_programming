@@ -26,6 +26,8 @@ int main() {
     #pragma omp threadprivate(for_copyprivate)
     #pragma omp parallel 
     {
+        // The copyprivate clause can be used to broadcast values acquired by a single thread directly to
+        // all instances of the private variables in the other threads. 
         #pragma omp single copyprivate(for_copyprivate)
         {
             for_copyprivate += omp_get_thread_num();
