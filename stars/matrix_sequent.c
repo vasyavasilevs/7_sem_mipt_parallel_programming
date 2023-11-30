@@ -19,13 +19,18 @@ int main(int argc, char *argv[]) {
 	        C[i][j] = 0;
         }
 
-    for(i = 0; i < n; i++) {
-        for(k = 0; k < n; k++) { 
-            for(j = 0; j < n; j++) {
-                C[i][j] += A[i][k] * B[k][j];
-	        }
-	    }
-    }
+    //transpose
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < i; j++) {
+            int tmp = B[j][i];
+            B[j][i] = B[i][j];
+            B[i][j] = tmp;
+        }
+
+    for(i = 0; i < n; i++)
+        for(j = 0; j < n; j++)
+            for(k = 0; k < n; k++)
+                C[i][j] += A[i][k] * B[j][k];
 
     clock_gettime(CLOCK_MONOTONIC_RAW, &end);
     unsigned long int delta_us = (end.tv_sec - start.tv_sec) * 1000000 + (end.tv_nsec - start.tv_nsec) / 1000;

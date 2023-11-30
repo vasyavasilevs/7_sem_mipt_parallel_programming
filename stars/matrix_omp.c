@@ -7,8 +7,6 @@
 
 #define n 1024
 
-//TODO: set num of teams, transpose
-
 int A[n][n], B[n][n], C[n][n];
 int i = 0, j = 0, k = 0;
 
@@ -43,23 +41,30 @@ int main(int argc, char *argv[]) {
 	        C[i][j] = 0;
         }
 
+    //transpose
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < i; j++) {
+            int tmp = B[j][i];
+            B[j][i] = B[i][j];
+            B[i][j] = tmp;
+        }
+
     double start_time = 0.0, end_time = 0.0, elapsed_time = 0.0;
+    
     start_time = omp_get_wtime();
 
     #pragma omp target map(to: A, B, C, i, j, k)
-    #pragma omp teams distribute parallel for private(i,j,k) shared(A,B,C)
-    //#pragma omp parallel for private(i,j,k) shared(A,B,C) 
-        for(i = 0; i < n; i++) {
-            for(k = 0; k < n; k++) { 
-                for(j = 0; j < n; j++) {
-                    C[i][j] += A[i][k] * B[k][j];
-                }
-            }
-        }
+    #pragma omp parallel for simd private(i,j,k) shared(A,B,C)
+    // #pragma omp parallel for simd private(i,j,k) shared(A,B,C) 
+
+    for(i = 0; i < n; i++)
+        for(j = 0; j < n; j++)
+            for(k = 0; k < n; k++)
+                C[i][j] += A[i][k] * B[j][k];
 
     end_time = omp_get_wtime();
 
-    printf("Elapsed time ~ %lf * 10^(-6) seconds (~us)\n", (end_time - start_time) * 1000000);
+    printf("Elapsed time for the parallel region ~ %lf * 10^(-6) seconds (~us)\n", (end_time - start_time) * 1000000);
 
     clock_gettime(CLOCK_MONOTONIC_RAW, &end);
     unsigned long int delta_us = (end.tv_sec - start.tv_sec) * 1000000 + (end.tv_nsec - start.tv_nsec) / 1000;
